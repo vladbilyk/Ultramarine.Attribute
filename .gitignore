@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Source/Ultramarine.Attribute/bin/Debug
+/Source/Ultramarine.Attribute/obj/Debug
+/Source/Ultramarine.Attribute/Ultramarine.Attribute.v12.suo
