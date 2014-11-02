@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PhotoMetadataProvider.cs" />
     <Compile Include="UltramarineSnapIn.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -52,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ultramarine.Attribute\Ultramarine.Attribute.csproj">
+      <Project>{8029DE34-F69D-47DC-B887-7E43F1D18391}</Project>
+      <Name>Ultramarine.Attribute</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
