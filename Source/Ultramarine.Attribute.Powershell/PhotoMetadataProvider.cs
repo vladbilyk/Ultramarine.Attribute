@@ -5,7 +5,7 @@ using System.Management.Automation.Provider;
 
 namespace Ultramarine.Attribute.Powershell
 {
-    [CmdletProvider("PhotoMetadataProvider", ProviderCapabilities.None)]
+    [CmdletProvider("PhotoMetadata", ProviderCapabilities.None)]
     public class PhotoMetadataProvider : ItemCmdletProvider
     {
         protected override bool IsValidPath(string path)
