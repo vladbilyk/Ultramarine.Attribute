@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Tests\test.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ultramarine.Attribute\Ultramarine.Attribute.csproj">
