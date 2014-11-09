@@ -2,7 +2,8 @@
 $imageDrive = Get-PSDrive -Name image
 if (!$imageDrive)
 {
-	New-PSDrive -Name image -PSProvider PhotoMetadata -Root "C:\Users\vbilyk\Pictures\Photo Stream\My Photo Stream\IMG_0022.JPG"
+	$imagePath = Join-Path $PSScriptRoot dsc_4646.jpg
+	New-PSDrive -Name image -PSProvider PhotoMetadata -Root $imagePath
 }
 Get-Item image:\System.Photo.CameraModel
 Get-Item image:\System.Photo.CameraManufacturer
