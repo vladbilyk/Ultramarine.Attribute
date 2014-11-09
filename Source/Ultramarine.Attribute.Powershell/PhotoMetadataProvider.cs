@@ -19,7 +19,7 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override bool ItemExists(string path)
         {
-            return true; //base.ItemExists(path);
+            return (PSDriveInfo as PhotoMetadataDriveInfo).PhotoMetadata.CheckPropertyName(path); 
         }
 
         protected override PSDriveInfo NewDrive(PSDriveInfo drive)

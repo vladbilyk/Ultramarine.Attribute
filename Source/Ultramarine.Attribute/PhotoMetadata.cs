@@ -117,6 +117,11 @@ namespace Ultramarine.Attribute
             }
         }
 
+        public bool CheckPropertyName(string name)
+        {
+            return _metadata.ContainsKey(name);
+        }
+
         public Dictionary<string, object> Metadata { get { return _metadata; } }
     }
 }
