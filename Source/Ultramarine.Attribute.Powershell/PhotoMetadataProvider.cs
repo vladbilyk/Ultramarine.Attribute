@@ -13,7 +13,7 @@ namespace Ultramarine.Attribute.Powershell
         protected override bool IsValidPath(string path)
         {
             WriteVerbose(string.Format("Path: {0} is validated", path));
-
+            // TODO: implement
             return true;
         }
 
@@ -49,7 +49,7 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void GetItem(string path)
         {
-            //base.GetItem(path);
+            //TODO: check this implementation
             // Check to see if the path represents a valid drive.
             if (PathIsDrive(path))
             {
