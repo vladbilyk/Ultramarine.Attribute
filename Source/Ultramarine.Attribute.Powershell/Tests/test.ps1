@@ -1,6 +1,5 @@
 ﻿Import-Module Ultramarine.Attribute.Powershell
-$imageDrive = Get-PSDrive -Name image
-if (!$imageDrive)
+if (!(Test-Path "image:"))
 {
 	$imagePath = Join-Path $PSScriptRoot dsc_4646.jpg
 	New-PSDrive -Name image -PSProvider PhotoMetadata -Root $imagePath
