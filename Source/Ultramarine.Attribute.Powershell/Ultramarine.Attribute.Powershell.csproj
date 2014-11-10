@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="publish-module.ps1" />
     <None Include="Tests\test.ps1" />
   </ItemGroup>
   <ItemGroup>
