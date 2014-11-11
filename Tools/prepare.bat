@@ -1,0 +1,1 @@
+%~dp0NuGet\nuget.exe Install %~dp0packages.config -o %~dp0packages
