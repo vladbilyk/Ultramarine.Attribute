@@ -12,5 +12,18 @@ Describe "PhotoMetadata provider tests" {
         It "Camera Manufacturer" {
             Get-Item image:\System.Photo.CameraManufacturer | Should Be "NIKON CORPORATION"
         }
+
+        It "Comments" {
+            Get-Item image:\System.Comment | Should Be "VL@D BILYK.       +7(906)2473265"
+        }
+
+        It "Program Name" {
+            Get-Item image:\System.ApplicationName | Should Be "Adobe Photoshop Lightroom 3.5 (Windows)"
+        }
+
+        #It "Date Taken" {
+        #    Get-Item image:\System.Photo.DateTaken | Should Be "ddd"
+        #}
+
     }
 }
