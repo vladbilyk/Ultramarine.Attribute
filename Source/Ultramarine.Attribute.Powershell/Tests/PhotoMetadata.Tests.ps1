@@ -1,4 +1,4 @@
-﻿Import-Module Ultramarine.Attribute.Powershell
+﻿Import-Module ..\bin\Release\Ultramarine.Attribute.Powershell.dll
 
 Describe "PhotoMetadata provider tests" {
     Context "Image drive" {
