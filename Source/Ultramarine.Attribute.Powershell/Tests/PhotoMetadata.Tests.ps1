@@ -21,9 +21,9 @@ Describe "PhotoMetadata provider tests" {
             Get-Item image:\System.ApplicationName | Should Be "Adobe Photoshop Lightroom 3.5 (Windows)"
         }
 
-        #It "Date Taken" {
-        #    Get-Item image:\System.Photo.DateTaken | Should Be "ddd"
-        #}
+        It "Date Taken" {
+            (Get-Item image:\System.Photo.DateTaken).Day | Should Be 26
+        }
 
     }
 }

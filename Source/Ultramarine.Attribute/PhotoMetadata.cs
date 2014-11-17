@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Media.Imaging;
 
 namespace Ultramarine.Attribute
@@ -114,6 +116,17 @@ namespace Ultramarine.Attribute
                 {
                     _metadata[key] = meta.GetQuery(key);
                 }
+            }
+
+            TuneCustomObjects();
+        }
+
+        private void TuneCustomObjects()
+        {
+            if (_metadata["System.Photo.DateTaken"] != null)
+            {
+                FILETIME filetime = (FILETIME)_metadata["System.Photo.DateTaken"];
+                _metadata["System.Photo.DateTaken"] = DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (long)(uint)filetime.dwLowDateTime);    
             }
         }
 
