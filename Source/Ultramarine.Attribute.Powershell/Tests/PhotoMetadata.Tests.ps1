@@ -25,5 +25,14 @@ Describe "PhotoMetadata provider tests" {
             (Get-Item image:\System.Photo.DateTaken).Day | Should Be 26
         }
 
+        It "Vertical Resolution" {
+            Get-Item image:\System.Image.VerticalResolution | Should Be 300
+        }
+
+        It "Horizontal Resolution" {
+            Get-Item image:\System.Image.VerticalResolution | Should Be 300
+        }
+
+
     }
 }
