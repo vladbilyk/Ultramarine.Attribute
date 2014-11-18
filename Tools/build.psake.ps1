@@ -6,7 +6,7 @@ properties {
 Task Default -depends Compile
 
 Task Compile {
-    msbuild "..\Source\Ultramarine.Attribute\Ultramarine.Attribute.sln"
+    msbuild "..\Source\Ultramarine.Attribute\Ultramarine.Attribute.sln" /p:Configuration=Release
 }
 
 Task Test {
