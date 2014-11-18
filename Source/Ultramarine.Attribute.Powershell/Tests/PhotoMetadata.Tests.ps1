@@ -33,6 +33,8 @@ Describe "PhotoMetadata provider tests" {
             Get-Item image:\System.Image.VerticalResolution | Should Be 300
         }
 
-
+        It "ResolutionUnit" {
+            Get-Item image:\System.Image.ResolutionUnit | Should Be "Inch"
+        }
     }
 }

@@ -128,6 +128,9 @@ namespace Ultramarine.Attribute
                 FILETIME filetime = (FILETIME)_metadata["System.Photo.DateTaken"];
                 _metadata["System.Photo.DateTaken"] = DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (long)(uint)filetime.dwLowDateTime);    
             }
+
+            var ru = (ushort)_metadata["System.Image.ResolutionUnit"];
+            _metadata["System.Image.ResolutionUnit"] = (ResolutionUnit) ru;
         }
 
         public bool CheckPropertyName(string name)
@@ -136,5 +139,12 @@ namespace Ultramarine.Attribute
         }
 
         public Dictionary<string, object> Metadata { get { return _metadata; } }
+    }
+
+    public enum ResolutionUnit
+    {
+        None = 1,
+        Inch = 2,
+        Centimeter = 3
     }
 }
