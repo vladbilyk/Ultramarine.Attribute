@@ -19,7 +19,7 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override bool ItemExists(string path)
         {
-            return (PSDriveInfo as PhotoMetadataDriveInfo).PhotoMetadata.CheckPropertyName(path); 
+            return ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.CheckPropertyName(path); 
         }
 
         protected override PSDriveInfo NewDrive(PSDriveInfo drive)
@@ -59,7 +59,7 @@ namespace Ultramarine.Attribute.Powershell
 
             var request = NormalizePath(path).Replace(PSDriveInfo.Root + PathSeparator, string.Empty);
 
-            var obj = (PSDriveInfo as PhotoMetadataDriveInfo).PhotoMetadata.Metadata[request];
+            var obj = ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.Metadata[request];
 
             WriteItemObject(obj, path, false);
         }
@@ -85,7 +85,7 @@ namespace Ultramarine.Attribute.Powershell
 
         private string NormalizePath(string path)
         {
-            string result = path;
+            var result = path;
 
             if (!String.IsNullOrEmpty(path))
             {
