@@ -111,9 +111,10 @@ namespace Ultramarine.Attribute
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 BitmapSource bs = BitmapFrame.Create(fs);
-                var meta = (bs.Metadata as BitmapMetadata);
+                var meta = (BitmapMetadata)bs.Metadata;
                 foreach (var key in _metadata.Keys.ToArray())
                 {
+                    // ReSharper disable once PossibleNullReferenceException because InvalidCastException will be thrown above
                     _metadata[key] = meta.GetQuery(key);
                 }
             }
@@ -125,8 +126,8 @@ namespace Ultramarine.Attribute
         {
             if (_metadata["System.Photo.DateTaken"] != null)
             {
-                FILETIME filetime = (FILETIME)_metadata["System.Photo.DateTaken"];
-                _metadata["System.Photo.DateTaken"] = DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (long)(uint)filetime.dwLowDateTime);    
+                var filetime = (FILETIME)_metadata["System.Photo.DateTaken"];
+                _metadata["System.Photo.DateTaken"] = DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (uint)filetime.dwLowDateTime);    
             }
 
             var ru = (ushort)_metadata["System.Image.ResolutionUnit"];
