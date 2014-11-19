@@ -10,37 +10,33 @@ namespace Ultramarine.Attribute.Powershell
     {
         private const string PathSeparator = "\\";
 
-        protected override bool IsValidPath(string path)
-        {
-            WriteVerbose(string.Format("Path: {0} is validated", path));
-            // TODO: implement
-            return true;
-        }
-
         protected override bool ItemExists(string path)
         {
             return ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.CheckPropertyName(path); 
+        }
+
+        protected override bool IsValidPath(string path)
+        {
+            throw new NotImplementedException();
         }
 
         protected override PSDriveInfo NewDrive(PSDriveInfo drive)
         {
             if (drive == null)
             {
-                WriteError(new ErrorRecord(
-                           new ArgumentNullException("drive"),
-                           "NullDrive",
-                           ErrorCategory.InvalidArgument,
-                           null));
+                WriteError(new ErrorRecord( new ArgumentNullException("drive"),
+                                            "NullDrive",
+                                            ErrorCategory.InvalidArgument,
+                                            null));
                 return null;
             }
 
             if (String.IsNullOrEmpty(drive.Root) || !File.Exists(drive.Root))
             {
-                WriteError(new ErrorRecord(
-                           new ArgumentException("drive.Root"),
-                           "NoRoot",
-                           ErrorCategory.InvalidArgument,
-                           drive));
+                WriteError(new ErrorRecord( new ArgumentException("drive.Root"),
+                                            "NoRoot",
+                                            ErrorCategory.InvalidArgument,
+                                            drive));
                 return null;
             }
 
@@ -49,50 +45,25 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void GetItem(string path)
         {
-            //TODO: check this implementation
-            // Check to see if the path represents a valid drive.
-            if (PathIsDrive(path))
+            var field = GetField(path);
+
+            if (string.IsNullOrEmpty(path))
             {
                 WriteItemObject(PSDriveInfo, path, true);
                 return;
             }
 
-            var request = NormalizePath(path).Replace(PSDriveInfo.Root + PathSeparator, string.Empty);
-
-            var obj = ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.Metadata[request];
-
-            WriteItemObject(obj, path, false);
+            WriteItemObject(((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.Metadata[field], path, false);
         }
 
-        /// <summary>
-        /// Checks to see if a given path is actually a drive name.
-        /// </summary>
-        /// <param name="path">The path to check.</param>
-        /// <returns>
-        /// True if the path given represents a drive, otherwise false 
-        /// is returned.
-        /// </returns>
-        private bool PathIsDrive(string path)
+        private static string NormalizePath(string path)
         {
-            // Remove the drive name and first path separator.  If the 
-            // path is reduced to nothing, it is a drive. Also, if it is
-            // just a drive then there will not be any path separators.
-            return String.IsNullOrEmpty(
-                path.Replace(PSDriveInfo.Root, string.Empty)) ||
-                   String.IsNullOrEmpty(
-                       path.Replace(PSDriveInfo.Root + PathSeparator, string.Empty));
+            return string.IsNullOrEmpty(path) ? path : path.Replace("/", PathSeparator);
         }
 
-        private string NormalizePath(string path)
+        private string GetField(string path)
         {
-            var result = path;
-
-            if (!String.IsNullOrEmpty(path))
-            {
-                result = path.Replace("/", PathSeparator);
-            }
-
-            return result;
+            return NormalizePath(path).Replace(PSDriveInfo.Root + PathSeparator, string.Empty);
         }
     }
 
