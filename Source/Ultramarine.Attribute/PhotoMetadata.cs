@@ -127,11 +127,16 @@ namespace Ultramarine.Attribute
             if (_metadata["System.Photo.DateTaken"] != null)
             {
                 var filetime = (FILETIME)_metadata["System.Photo.DateTaken"];
-                _metadata["System.Photo.DateTaken"] = DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (uint)filetime.dwLowDateTime);    
+                _metadata["System.Photo.DateTaken"] = FromFileTime(filetime);    
             }
 
             var ru = (ushort)_metadata["System.Image.ResolutionUnit"];
             _metadata["System.Image.ResolutionUnit"] = (ResolutionUnit) ru;
+        }
+
+        private static DateTime FromFileTime(FILETIME filetime)
+        {
+            return DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (uint)filetime.dwLowDateTime);
         }
 
         public bool CheckPropertyName(string name)
