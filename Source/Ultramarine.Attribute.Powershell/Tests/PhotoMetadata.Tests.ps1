@@ -36,5 +36,13 @@ Describe "PhotoMetadata provider tests" {
         It "ResolutionUnit" {
             Get-Item image:\System.Image.ResolutionUnit | Should Be "Inch"
         }
+
+        It "Aperture" {
+            Get-Item image:\System.Photo.Aperture | Should Be 4
+        }
+
+        It "Exposure time" {
+            Get-Item image:\System.Photo.ExposureTime | Should Be (1.0 / 800)
+        }
     }
 }
