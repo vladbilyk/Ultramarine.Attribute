@@ -144,6 +144,16 @@ namespace Ultramarine.Attribute
             return _metadata.ContainsKey(name);
         }
 
+        public bool CheckSubProperties(string propertyPath)
+        {
+            return _metadata.Keys.FirstOrDefault(k => k.StartsWith(propertyPath + ".")) != null;
+        }
+
+        public List<string> GetSubProperties(string propertyPath)
+        {
+            return _metadata.Keys.Where(key => key.StartsWith(propertyPath + ".")).ToList();
+        }
+
         public Dictionary<string, object> Metadata { get { return _metadata; } }
     }
 

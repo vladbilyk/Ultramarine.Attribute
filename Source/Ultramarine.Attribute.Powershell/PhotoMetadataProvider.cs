@@ -12,11 +12,13 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override bool ItemExists(string path)
         {
-            return ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.CheckPropertyName(path); 
+            //((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.CheckPropertyName(path)
+            return true; 
         }
 
         protected override bool IsValidPath(string path)
         {
+            WriteVerbose("IsValidPath :" + path);
             throw new NotImplementedException();
         }
 
@@ -43,11 +45,41 @@ namespace Ultramarine.Attribute.Powershell
             return new PhotoMetadataDriveInfo(drive);
         }
 
+        protected override bool HasChildItems(string path)
+        {
+            WriteVerbose("HasChildItems: " + path);
+            var field = GetField(path);
+            if (string.IsNullOrEmpty(field))
+            {
+                return true;
+            }
+
+            return ((PhotoMetadataDriveInfo) PSDriveInfo).PhotoMetadata.CheckSubProperties(field);
+        }
+
+        protected override void GetChildItems(string path, bool recurse)
+        {
+            WriteVerbose("GetChildItems: " + path);
+            //base.GetChildItems(path, recurse);
+        }
+
+        protected override void GetChildNames(string path, ReturnContainers returnContainers)
+        {
+            WriteVerbose("GetChildNames: " + path);
+            var field = GetField(path);
+            var list = ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.GetSubProperties(field);
+
+            foreach (string s in list)
+            {
+                WriteItemObject(s, path, true);
+            }
+        }
+
         protected override void GetItem(string path)
         {
             var field = GetField(path);
 
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(field))
             {
                 WriteItemObject(PSDriveInfo, path, true);
                 return;

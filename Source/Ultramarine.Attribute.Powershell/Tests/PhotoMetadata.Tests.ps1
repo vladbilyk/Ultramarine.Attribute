@@ -1,7 +1,17 @@
 ﻿Import-Module ..\bin\Release\Ultramarine.Attribute.Powershell.dll
 
 Describe "PhotoMetadata provider tests" {
-    Context "Image drive" {
+
+    Context "ChildItems" {
+        $imagePath = Join-Path $PSScriptRoot dsc_4646.jpg
+        New-PSDrive -Name img -PSProvider PhotoMetadata -Root $imagePath
+
+        It "System.Image" {
+            (Get-ChildItem img:\System.Image -Name).Count | Should Be 7
+        }
+    }
+
+    Context "Items" {
         $imagePath = Join-Path $PSScriptRoot dsc_4646.jpg
         New-PSDrive -Name image -PSProvider PhotoMetadata -Root $imagePath
 
