@@ -6,8 +6,24 @@ Describe "PhotoMetadata provider tests" {
         $imagePath = Join-Path $PSScriptRoot dsc_4646.jpg
         New-PSDrive -Name img -PSProvider PhotoMetadata -Root $imagePath
 
+        It "Root" {
+            Get-ChildItem img:\ | Should Be "System"
+        }
+
+        It "System" {
+            (Get-ChildItem img:\System -Name).Count | Should Be 13
+        }
+
+        It "System.GPS" {
+            (Get-ChildItem img:\System.GPS -Name).Count | Should Be 30
+        }
+
         It "System.Image" {
             (Get-ChildItem img:\System.Image -Name).Count | Should Be 7
+        }
+
+        It "System.Photo" {
+            (Get-ChildItem img:\System.Photo -Name).Count | Should Be 36
         }
     }
 

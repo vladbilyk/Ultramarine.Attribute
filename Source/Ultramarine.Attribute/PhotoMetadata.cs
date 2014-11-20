@@ -139,20 +139,20 @@ namespace Ultramarine.Attribute
             return DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (uint)filetime.dwLowDateTime);
         }
 
-        public bool CheckPropertyName(string name)
-        {
-            return _metadata.ContainsKey(name);
-        }
+        //public bool CheckPropertyName(string name)
+        //{
+        //    return _metadata.ContainsKey(name);
+        //}
 
-        public bool CheckSubProperties(string propertyPath)
-        {
-            return _metadata.Keys.FirstOrDefault(k => k.StartsWith(propertyPath + ".")) != null;
-        }
+        //public bool CheckSubProperties(string propertyPath)
+        //{
+        //    return _metadata.Keys.FirstOrDefault(k => k.StartsWith(propertyPath + ".")) != null;
+        //}
 
-        public List<string> GetSubProperties(string propertyPath)
-        {
-            return _metadata.Keys.Where(key => key.StartsWith(propertyPath + ".")).ToList();
-        }
+        //public List<string> GetSubProperties(string propertyPath)
+        //{
+        //    return _metadata.Keys.Where(key => key.StartsWith(propertyPath + ".")).ToList();
+        //}
 
         public Dictionary<string, object> Metadata { get { return _metadata; } }
     }

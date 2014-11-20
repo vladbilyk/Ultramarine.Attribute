@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Provider;
 
@@ -10,10 +12,39 @@ namespace Ultramarine.Attribute.Powershell
     {
         private const string PathSeparator = "\\";
 
+        private readonly string[] _treeItemNames = { "System", "System.GPS", "System.Photo", "System.Image" };
+
         protected override bool ItemExists(string path)
         {
-            //((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.CheckPropertyName(path)
-            return true; 
+            var itemName = GetItemName(path);
+            if (string.IsNullOrEmpty(itemName))
+            {
+                return true;
+            }
+            if (IsTreeItemName(itemName))
+            {
+                return true;
+            }
+            if (IsLeafItemName(itemName))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private PhotoMetadata PhotoMetadata
+        {
+            get { return ((PhotoMetadataDriveInfo) PSDriveInfo).PhotoMetadata; }
+        }
+
+        private bool IsLeafItemName(string itemName)
+        {
+            return PhotoMetadata.Metadata.ContainsKey(itemName);
+        }
+
+        private bool IsTreeItemName(string itemName)
+        {
+            return _treeItemNames.Contains(itemName);
         }
 
         protected override bool IsValidPath(string path)
@@ -47,37 +78,82 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override bool HasChildItems(string path)
         {
-            WriteVerbose("HasChildItems: " + path);
-            var field = GetField(path);
-            if (string.IsNullOrEmpty(field))
-            {
-                return true;
-            }
-
-            return ((PhotoMetadataDriveInfo) PSDriveInfo).PhotoMetadata.CheckSubProperties(field);
+            var itemName = GetItemName(path);
+            return !string.IsNullOrEmpty(itemName) && IsTreeItemName(itemName);
         }
 
         protected override void GetChildItems(string path, bool recurse)
         {
-            WriteVerbose("GetChildItems: " + path);
-            //base.GetChildItems(path, recurse);
+            // TODO: use recurse param
+            var itemName = GetItemName(path);
+            if (string.IsNullOrEmpty(itemName))
+            {
+                WriteItemObject("System", path, true);
+                return;
+            }
+
+            List<string> childItemNames = null;
+            if (itemName == "System")
+            {
+                childItemNames = PhotoMetadata.Metadata.Keys.Where(key => key.StartsWith("System")
+                                                                          && !key.StartsWith("System.GPS")
+                                                                          && !key.StartsWith("System.Image")
+                                                                          && !key.StartsWith("System.Photo")).ToList();
+                foreach (var childItemName in childItemNames)
+                {
+                    WriteItemObject(PhotoMetadata.Metadata[childItemName], path, false);
+                }
+                WriteItemObject("System.GPS", path, true);
+                WriteItemObject("System.Image", path, true);
+                WriteItemObject("System.Photo", path, true);
+            }
+            else
+            {
+                childItemNames = PhotoMetadata.Metadata.Keys.Where(key => key.StartsWith(itemName)).ToList();
+                foreach (var childItemName in childItemNames)
+                {
+                    WriteItemObject(PhotoMetadata.Metadata[childItemName], path, false);
+                }
+            }
         }
 
         protected override void GetChildNames(string path, ReturnContainers returnContainers)
         {
-            WriteVerbose("GetChildNames: " + path);
-            var field = GetField(path);
-            var list = ((PhotoMetadataDriveInfo)PSDriveInfo).PhotoMetadata.GetSubProperties(field);
-
-            foreach (string s in list)
+            var itemName = GetItemName(path);
+            if (string.IsNullOrEmpty(itemName))
             {
-                WriteItemObject(s, path, true);
+                WriteItemObject("System", path, true);
+                return;
+            }
+
+            List<string> childItemNames = null;
+            if (itemName == "System")
+            {
+                childItemNames = PhotoMetadata.Metadata.Keys.Where(key => key.StartsWith("System")
+                                                                          && !key.StartsWith("System.GPS")
+                                                                          && !key.StartsWith("System.Image")
+                                                                          && !key.StartsWith("System.Photo")).ToList();
+                foreach (var childItemName in childItemNames)
+                {
+                    WriteItemObject(childItemName, path, false);
+                }
+                WriteItemObject("System.GPS", path, true);
+                WriteItemObject("System.Image", path, true);
+                WriteItemObject("System.Photo", path, true);
+            }
+            else
+            {
+                childItemNames = PhotoMetadata.Metadata.Keys.Where(key => key.StartsWith(itemName)).ToList();
+                foreach (var childItemName in childItemNames)
+                {
+                    WriteItemObject(childItemName, path, false);
+                }
             }
         }
 
         protected override void GetItem(string path)
         {
-            var field = GetField(path);
+            var field = GetItemName(path);
 
             if (string.IsNullOrEmpty(field))
             {
@@ -93,7 +169,7 @@ namespace Ultramarine.Attribute.Powershell
             return string.IsNullOrEmpty(path) ? path : path.Replace("/", PathSeparator);
         }
 
-        private string GetField(string path)
+        private string GetItemName(string path)
         {
             return NormalizePath(path).Replace(PSDriveInfo.Root + PathSeparator, string.Empty);
         }
