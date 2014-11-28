@@ -16,6 +16,7 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override bool ItemExists(string path)
         {
+            WriteVerbose("ItemExists :" + path);
             var itemName = GetItemName(path);
             if (string.IsNullOrEmpty(itemName))
             {
@@ -84,6 +85,8 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void GetChildItems(string path, bool recurse)
         {
+            WriteVerbose("GetChildItems " + path);
+
             // TODO: use recurse param
             var itemName = GetItemName(path);
             if (string.IsNullOrEmpty(itemName))
@@ -119,6 +122,8 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void GetChildNames(string path, ReturnContainers returnContainers)
         {
+            WriteVerbose("GetChildNames " + path);
+
             var itemName = GetItemName(path);
             if (string.IsNullOrEmpty(itemName))
             {
@@ -153,11 +158,18 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void GetItem(string path)
         {
+            WriteVerbose("GetItem " + path);
             var field = GetItemName(path);
 
             if (string.IsNullOrEmpty(field))
             {
                 WriteItemObject(PSDriveInfo, path, true);
+                return;
+            }
+
+            if (IsTreeItemName(field))
+            {
+                WriteItemObject(field, path, true);
                 return;
             }
 
