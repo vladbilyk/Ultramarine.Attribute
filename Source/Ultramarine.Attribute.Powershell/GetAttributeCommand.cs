@@ -1,9 +1,10 @@
-﻿using System.Management.Automation;
+﻿using System.IO;
+using System.Management.Automation;
 
 namespace Ultramarine.Attribute.Powershell
 {
     [Cmdlet(VerbsCommon.Get, "Attribute")]
-    public class GetAttributeCommand : Cmdlet
+    public class GetAttributeCommand : PSCmdlet
     {
         [Parameter(
              //Position = 0,
@@ -15,6 +16,12 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void ProcessRecord()
         {
+            //var filePath = SessionState.Path.GetResolvedPSPathFromPSPath(Path);
+            if (!File.Exists(Path))
+            {
+                ThrowTerminatingError(new ErrorRecord(new PSArgumentException("File is missing: " + Path, "Path"), 
+                                                        "", ErrorCategory.InvalidArgument, Path));
+            }
             WriteObject(Path);
         }
     }
