@@ -8,7 +8,7 @@ Describe "Cmdlet tests" {
         }
 
         It "Simple check of Path parameter" {
-            { Get-Attribute -Path "Hello!" } | Should Throw "File is missing"
+            { Get-Attribute -Path "Hello!" } | Should Throw "Cannot find path"
         }
 
         It "All attributes" {
