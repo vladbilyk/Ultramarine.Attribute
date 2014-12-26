@@ -16,13 +16,12 @@ namespace Ultramarine.Attribute.Powershell
 
         protected override void ProcessRecord()
         {
-            //var filePath = SessionState.Path.GetResolvedPSPathFromPSPath(Path);
             if (!File.Exists(Path))
             {
                 ThrowTerminatingError(new ErrorRecord(new PSArgumentException("File is missing: " + Path, "Path"), 
                                                         "", ErrorCategory.InvalidArgument, Path));
             }
-            WriteObject(Path);
+            WriteObject(new PhotoMetadata(Path).Metadata);
         }
     }
 }

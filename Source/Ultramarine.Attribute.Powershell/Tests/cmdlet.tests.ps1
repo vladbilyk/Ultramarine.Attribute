@@ -11,5 +11,10 @@ Describe "Cmdlet tests" {
             { Get-Attribute -Path "Hello!" } | Should Throw "File is missing"
         }
 
+        It "Picture" {
+            { Get-Attribute -Path "dsc_4646.jpg" } | Should Not Throw
+        }
+
+
     }
 }
