@@ -19,5 +19,9 @@ Describe "Cmdlet tests" {
             (Get-Attribute -Path "dsc_4646.jpg")["System.Photo.DateTaken"].Day | Should Be 26 
         }
 
+        It "Resolution Unit" {
+             (Get-Attribute -Path "dsc_4646.jpg")["System.Image.ResolutionUnit"] | Should Be "Inch"
+        }
+
     }
 }

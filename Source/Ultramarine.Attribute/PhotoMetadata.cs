@@ -119,6 +119,10 @@ namespace Ultramarine.Attribute
                     {
                         obj = FromFileTime((FILETIME)obj);
                     }
+                    else if (key == "System.Image.ResolutionUnit")
+                    {
+                        obj = (ResolutionUnit) ((ushort) obj);
+                    }
                     _metadata[key] = obj;
                 }
             }
@@ -130,5 +134,12 @@ namespace Ultramarine.Attribute
         {
             return DateTime.FromFileTime(((long)filetime.dwHighDateTime << 32) + (uint)filetime.dwLowDateTime);
         }
+    }
+
+    public enum ResolutionUnit
+    {
+        None = 1,
+        Inch = 2,
+        Centimeter = 3
     }
 }
