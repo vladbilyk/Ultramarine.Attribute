@@ -12,3 +12,4 @@ Source/Ultramarine.Attribute/bin/
 Source/Ultramarine.Attribute/obj/
 Tools/packages/
 Source/Ultramarine.Attribute/packages/
+*.user
