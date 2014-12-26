@@ -15,6 +15,9 @@ Describe "Cmdlet tests" {
             (Get-Attribute -Path "dsc_4646.jpg").Count | Should Be 83
         }
 
+        It "Date taken" {
+            (Get-Attribute -Path "dsc_4646.jpg")["System.Photo.DateTaken"].Day | Should Be 26 
+        }
 
     }
 }
